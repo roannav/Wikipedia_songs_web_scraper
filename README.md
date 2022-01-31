@@ -12,7 +12,7 @@ Given the HTML of a Wikipedia page about a song,
 and given an attribute, it will search the Wikipedia infobox
 for the attribute and return the value.
 
-### print_links_to_years.py
+### get_links_to_years.py
 Given the HTML of a Wikipedia page about Billboard Top Songs in Year X,
 it will print the link to all other similar pages.
 
