@@ -13,12 +13,18 @@ import pandas as pd
 # IN: add_song_url_column: default is false
 #     If true, it adds an extra column for the song url.
 #
+# IN: table_selector: a string, which gets passed to soup.find()
+#     which identifies which table to select.  Uses CSS selector syntax.
+#     eg. 'table#baseball' is the table with id='baseball'
+#
 # Returns (data, cols)
-def get_text_from_table(soup, add_song_url_column=False):
+def get_text_from_table(soup, 
+                        add_song_url_column=False,
+                        table_selector='table'):
     data = []   # list of lists; 2D array
 
     # use the first table found
-    tab = soup.find("table")
+    tab = soup.find(table_selector)
 
     # the first row has the header 
     header = tab.find("tr")
