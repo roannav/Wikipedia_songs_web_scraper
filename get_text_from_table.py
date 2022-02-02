@@ -108,5 +108,12 @@ def run_tests():
     data, cols = get_text_from_table(soup, True)
     convert_table_to_csv( data, cols, 'output.csv')
 
+    data, cols = get_text_from_table(soup, False, "table")
+    convert_table_to_csv( data, cols, 'output2.csv')
+
+    # These selectors don't work: 
+    # "table.wikitable", ".wikitable", "table.sortable"
+    data, cols = get_text_from_table(soup, False, "table.wikitable")
+    convert_table_to_csv( data, cols, 'output3.csv')
 
 #run_tests()
