@@ -21,10 +21,16 @@ import pandas as pd
 def get_text_from_table(soup, 
                         add_song_url_column=False,
                         table_selector='table'):
+
     data = []   # list of lists; 2D array
 
     # use the first table found
     tab = soup.find(table_selector)
+
+    if not tab:
+        print("WARNING: get_text_from_table(): Couldn't find a table")
+        print(f"  using the CSS selector: {table_selector}")
+        return None, None
 
     # the first row has the header 
     header = tab.find("tr")
@@ -103,4 +109,4 @@ def run_tests():
     convert_table_to_csv( data, cols, 'output.csv')
 
 
-run_tests()
+#run_tests()
