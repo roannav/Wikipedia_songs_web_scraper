@@ -64,9 +64,8 @@ def test_1980():
     #print(song_rows[0])   # table header
     #print(song_rows[1])   # first row is the first song
 
-    data, cols = get_text_from_table.get_text_from_table(soup, True, "table") 
-    # These selectors don't work: 
-    # "table.wikitable", ".wikitable", "table.sortable"
+    data, cols = get_text_from_table.get_text_from_table(soup, True, 
+                                                         "wikitable") 
     get_text_from_table.convert_table_to_csv( data, cols, 'output_1980.csv')
 
 #test_1980()
@@ -79,11 +78,18 @@ def save_every_years_song_data():
 
     for year_link in year_links:
         year = year_link[-4:]   # the last 4 chars of the url is the year
+
+        if int(year) != 2013:    # to test only this single year
+            continue
+        #if int(year) <= 1958:    # to test only after 1958 
+        #    continue
+
         print(f'year is {year}')
         url = url_base + year_link 
         soup = get_soup( url, None, False)
 
-        data, cols = get_text_from_table.get_text_from_table(soup, True) 
+        data, cols = get_text_from_table.get_text_from_table(soup, True, 
+                                                         "wikitable") 
         get_text_from_table.convert_table_to_csv( data, cols, 
             f'output/songs_{year}.csv')
 

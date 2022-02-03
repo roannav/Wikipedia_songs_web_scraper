@@ -13,23 +13,28 @@ import pandas as pd
 # IN: add_song_url_column: default is false
 #     If true, it adds an extra column for the song url.
 #
-# IN: table_selector: a string, which gets passed to soup.find()
-#     which identifies which table to select.  Uses CSS selector syntax.
-#     eg. 'table#baseball' is the table with id='baseball'
+# IN: table_class: a string, which gets passed to soup.find()
+#     which identifies which table to select.  It looks for a 
+#     table with CSS class attribute: table_class
 #
 # Returns (data, cols)
 def get_text_from_table(soup, 
                         add_song_url_column=False,
-                        table_selector='table'):
+                        table_class=None):
 
     data = []   # list of lists; 2D array
 
-    # use the first table found
-    tab = soup.find(table_selector)
+    # use the first table found, that matches the class, if specified
+    if table_class:
+        tab = soup.find("table", class_=table_class)
+    else:
+        tab = soup.find("table")
+
+    has_class( tab, table_class)
 
     if not tab:
         print("WARNING: get_text_from_table(): Couldn't find a table")
-        print(f"  using the CSS selector: {table_selector}")
+        print(f"  with the class: {table_class}")
         return None, None
 
     # the first row has the header 
@@ -49,6 +54,26 @@ def get_text_from_table(soup,
         data.append(row)
     
     return data, cols
+
+
+# if class_name is specified,
+# then determine whether it's in the classes listed for the element.
+# otherwise return it has any classes.
+def has_class( element, class_name=None):
+    if element:
+        if "class" in element.attrs:
+            classes = element.attrs["class"]
+            print(f"This element has the CSS classes: {classes}")
+
+            if class_name:   
+                if class_name in classes:
+                    print(f"Found {class_name} in classes.")
+                    return True   # it has a matching class
+                else:
+                    print(f"Did NOT find {class_name} in classes.")
+                    return False  # it has a class, but NOT matching
+            return True  # it has at least 1 class
+    return False   # it has no class attribute
 
 
 def has_rowspan( td):
@@ -134,23 +159,31 @@ def convert_table_to_csv( data, cols, csv_filename):
 
 
 def run_tests():
+
     html_filename = 'html/Billboard_Top_in_1980.html'
     soup = bs4.BeautifulSoup(open(html_filename), features='html.parser')
     data, cols = get_text_from_table(soup, True)
     convert_table_to_csv( data, cols, 'output.csv')
 
-    data, cols = get_text_from_table(soup, False, "table")
+    html_filename = 'html/Billboard_Top_in_1980.html'
+    soup = bs4.BeautifulSoup(open(html_filename), features='html.parser')
+    data, cols = get_text_from_table(soup, False)
     convert_table_to_csv( data, cols, 'output2.csv')
 
-    # These selectors don't work: 
-    # "table.wikitable", ".wikitable", "table.sortable"
-    data, cols = get_text_from_table(soup, False, "table.wikitable")
+    html_filename = 'html/Billboard_Top_in_1980.html'
+    soup = bs4.BeautifulSoup(open(html_filename), features='html.parser')
+    data, cols = get_text_from_table(soup, False, "wikitable")
     convert_table_to_csv( data, cols, 'output3.csv')
 
     html_filename = 'html/Billboard_Top50_in_1958.html'
     soup = bs4.BeautifulSoup(open(html_filename), features='html.parser')
-    data, cols = get_text_from_table(soup, True)
+    data, cols = get_text_from_table(soup, True, "wikitable")
     convert_table_to_csv( data, cols, 'output4.csv')
+    
+    html_filename = 'html/Billboard_Top100_in_2012.html'
+    soup = bs4.BeautifulSoup(open(html_filename), features='html.parser')
+    data, cols = get_text_from_table(soup, True, "wikitable")
+    convert_table_to_csv( data, cols, 'output5.csv')
 
 
 #run_tests()
