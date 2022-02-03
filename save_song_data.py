@@ -19,6 +19,10 @@ def go_slow():
     # 3600 sec/hr / 500 req/hr = 7.2 sec/req
     time.sleep(8)
 
+    # if using OAuth 2.0 or a personal API token to do authentication, 
+    # then requests are limited to 5000 / hr.
+
+
 def get_soup( url, local_file, use_local_file):
     print(f'All the song data in {url}:')
 
@@ -41,6 +45,7 @@ def get_soup( url, local_file, use_local_file):
         soup = bs4.BeautifulSoup( res.text, features="lxml")
 
     return soup
+
 
 def test_1980():
     # use local file, instead of grabbing it from the Internet
@@ -68,8 +73,6 @@ def test_1980():
                                                          "wikitable") 
     get_text_from_table.convert_table_to_csv( data, cols, 'output_1980.csv')
 
-#test_1980()
-
 
 def save_every_years_song_data():
     year_links = get_links_to_years.get_links_to_years()
@@ -78,11 +81,6 @@ def save_every_years_song_data():
 
     for year_link in year_links:
         year = year_link[-4:]   # the last 4 chars of the url is the year
-
-        if int(year) != 2013:    # to test only this single year
-            continue
-        #if int(year) <= 1958:    # to test only after 1958 
-        #    continue
 
         print(f'year is {year}')
         url = url_base + year_link 
@@ -94,4 +92,5 @@ def save_every_years_song_data():
             f'output/songs_{year}.csv')
 
 
+#test_1980()
 save_every_years_song_data()
