@@ -103,7 +103,8 @@ def build_row(tr, add_song_url_column):
         # FIXME: This assumes only a 2-way tie.
         rank = prev_row.find("td").getText()
     else:
-        rank = tds[index].getText()
+        # remove the newline (eg in Billboard Top 100 in 2021) 
+        rank = tds[index].getText(strip=True)
         index += 1
 
     row.append(rank)
@@ -159,7 +160,7 @@ def convert_table_to_csv( data, cols, csv_filename):
 
 
 def run_tests():
-
+    '''
     html_filename = 'html/Billboard_Top_in_1980.html'
     soup = bs4.BeautifulSoup(open(html_filename), features='html.parser')
     data, cols = get_text_from_table(soup, True)
@@ -170,9 +171,10 @@ def run_tests():
     data, cols = get_text_from_table(soup, False)
     convert_table_to_csv( data, cols, 'output2.csv')
 
+    '''
     html_filename = 'html/Billboard_Top_in_1980.html'
     soup = bs4.BeautifulSoup(open(html_filename), features='html.parser')
-    data, cols = get_text_from_table(soup, False, "wikitable")
+    data, cols = get_text_from_table(soup, True, "wikitable")
     convert_table_to_csv( data, cols, 'output3.csv')
 
     html_filename = 'html/Billboard_Top50_in_1958.html'
@@ -185,5 +187,14 @@ def run_tests():
     data, cols = get_text_from_table(soup, True, "wikitable")
     convert_table_to_csv( data, cols, 'output5.csv')
 
+    html_filename = 'html/Billboard_Top100_in_2020.html'
+    soup = bs4.BeautifulSoup(open(html_filename), features='html.parser')
+    data, cols = get_text_from_table(soup, True, "wikitable")
+    convert_table_to_csv( data, cols, 'output6.csv')
+
+    html_filename = 'html/Billboard_Top100_in_2021.html'
+    soup = bs4.BeautifulSoup(open(html_filename), features='html.parser')
+    data, cols = get_text_from_table(soup, True, "wikitable")
+    convert_table_to_csv( data, cols, 'output7.csv')
 
 #run_tests()
