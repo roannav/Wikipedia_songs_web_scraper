@@ -169,6 +169,9 @@ def convert_table_to_csv( data, cols, csv_filename):
     # So we need quotes around the whole title to show that they are not
     # separate entries in the csv.
 
+    # NOTE: the Wikipedia links to the song pages will often contain 
+    # URL Encoding (eg %20 replaces a space.   %27 replaces a '  )
+
 
 def run_tests():
     '''
