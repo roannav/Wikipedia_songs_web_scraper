@@ -135,9 +135,20 @@ def build_row(tr, add_song_url_column):
     # like this...
     # <td>"<a href="/wiki/Call_Me_(Blondie_song)" 
     # title="Call Me (Blondie song)">Call Me</a>"</td>
+
     # Remove the extra quotes via the slice [1:-1].
     # Also extract() can add extra whitespace, so strip the whitespace.
-    row.append(tds[index].getText(strip=True)[index:-1])
+    title = tds[index].getText(strip=True)[1:-1]
+
+    # Sometimes there are 2 songs (both A-side and B-side of the record) 
+    # listed in the Billboard songs of 1958. 
+    # The other years only list 1 song per rank.
+    # Each song has an extra pair of quotes, like this:
+    # <td>"<a href="/wiki/Bird_Dog_(song)" title="Bird Dog (song)">Bird Dog</a>" / "<a href="/wiki/Devoted_to_You_(song)" title="Devoted to You (song)">Devoted to You</a>"</td>
+
+    # remove inner quotes " that are next to the / that separates the 2 songs
+    title = title.replace('" / "', ' / ')
+    row.append(title)
     index += 1
 
     # The third td ends with an extra '\n' at the end.  Remove it.
@@ -171,11 +182,11 @@ def run_tests():
     data, cols = get_text_from_table(soup, False)
     convert_table_to_csv( data, cols, 'output2.csv')
 
-    '''
     html_filename = 'html/Billboard_Top_in_1980.html'
     soup = bs4.BeautifulSoup(open(html_filename), features='html.parser')
     data, cols = get_text_from_table(soup, True, "wikitable")
     convert_table_to_csv( data, cols, 'output3.csv')
+    '''
 
     html_filename = 'html/Billboard_Top50_in_1958.html'
     soup = bs4.BeautifulSoup(open(html_filename), features='html.parser')
@@ -192,9 +203,11 @@ def run_tests():
     data, cols = get_text_from_table(soup, True, "wikitable")
     convert_table_to_csv( data, cols, 'output6.csv')
 
+    '''
     html_filename = 'html/Billboard_Top100_in_2021.html'
     soup = bs4.BeautifulSoup(open(html_filename), features='html.parser')
     data, cols = get_text_from_table(soup, True, "wikitable")
     convert_table_to_csv( data, cols, 'output7.csv')
+    '''
 
 #run_tests()
