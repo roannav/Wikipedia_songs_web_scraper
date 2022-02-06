@@ -1,4 +1,5 @@
 import bs4
+import unicodedata
 
 # Grab certain text, specified by 'att',  from the infobox in the soup
 # of a Wikipedia song page.
@@ -65,6 +66,10 @@ def get_text_from_infobox( soup, att):
                     # the children too...
                     # <td><a href="">Paul</a> and <a href="">Lee</a></td>
                     # ===> PaulandLee
+
+                # replace Unicode \xa0 (non-breaking space) with a space
+                value = unicodedata.normalize("NFKD", value)
+
                 print(value)
                 return value
 
@@ -77,9 +82,11 @@ def run_tests():
     ATTRS = ['B-side', 'Released', 'Recorded', 'Genre', 'Length', 'Label', 
         'Songwriter(s)', 'Producer(s)']
     
-    html_filenames = ['html/Funkytown.html', 'html/Upside_Down.html',
+    html_filenames = ['html/Funkytown.html', 
+        'html/Upside_Down.html',
         'html/Catch_a_Falling_Star1958.html',
-        'html/Magic_Moments1958.html']
+        'html/Magic_Moments1958.html',
+        'html/I_Hope_Youre_Happy_Now2020.html']
 
     for f in html_filenames:
         soup = bs4.BeautifulSoup(open(f), features='html.parser')
