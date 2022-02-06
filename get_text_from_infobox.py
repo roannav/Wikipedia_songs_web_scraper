@@ -49,7 +49,13 @@ def get_text_from_infobox( soup, att):
                         value += li.getText( strip=True) + ", "
                     value = value[:-2]    # remove comma and space for last one
                 else:
-                    value = row.find("td").getText( strip=True)
+                    # only get rid of white space at beginning and end of <td>
+                    value = row.find("td").getText().strip()
+
+                    # NOTE: getText( strip=True) removes whitespace from 
+                    # the children too...
+                    # <td><a href="">Paul</a> and <a href="">Lee</a></td>
+                    # ===> PaulandLee
                 print(value)
                 return value
 
