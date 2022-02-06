@@ -48,7 +48,16 @@ def get_text_from_infobox( soup, att):
                     for li in lis:
                         value += li.getText( strip=True) + ", "
                     value = value[:-2]    # remove comma and space for last one
+
                 else:
+                    # if there are items, separated by <br>, then
+                    # separate them by adding a comma.
+                    # <td><a href="">Burt</a><br /><a href="">Hal</a></td>
+                    # ===> Burt, Hal
+                    brs = row.find_all("br")
+                    for br in brs:
+                        br.replaceWith(', ')
+
                     # only get rid of white space at beginning and end of <td>
                     value = row.find("td").getText().strip()
 
@@ -69,7 +78,8 @@ def run_tests():
         'Songwriter(s)', 'Producer(s)']
     
     html_filenames = ['html/Funkytown.html', 'html/Upside_Down.html',
-        'html/Catch_a_Falling_Star1958.html']
+        'html/Catch_a_Falling_Star1958.html',
+        'html/Magic_Moments1958.html']
 
     for f in html_filenames:
         soup = bs4.BeautifulSoup(open(f), features='html.parser')
