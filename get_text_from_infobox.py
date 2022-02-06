@@ -7,7 +7,7 @@ import bs4
 # It finds the *first* infobox in the page.
 # The infobox has many attribute-value pairs. 
 # It searches for the specified att attribute,
-# and then print and returns the matching value
+# and then prints and returns the matching value
 # or None, if no match.
 def get_text_from_infobox( soup, att):
 
@@ -38,8 +38,18 @@ def get_text_from_infobox( soup, att):
                 while row.sup:          # if there are <sup> tags in the row,
                     row.sup.extract()   # remove them
 
+                value = ""
                 # get the text from the <td> element only, not from <th>
-                value = row.find("td").getText( strip=True)
+
+                # if there is a list, inside of the <td>, then separate 
+                # the list items by adding a comma
+                if row.find("li"):
+                    lis = row.find_all("li")
+                    for li in lis:
+                        value += li.getText( strip=True) + ", "
+                    value = value[:-2]    # remove comma and space for last one
+                else:
+                    value = row.find("td").getText( strip=True)
                 print(value)
                 return value
 
@@ -49,9 +59,11 @@ def get_text_from_infobox( soup, att):
 
 def run_tests():
     # Look at a Wikipedia page, which usu. has these attributes in an infobox
-    ATTRS = ['B-side', 'Released', 'Genre', 'Length', 'Label', 'Songwriter(s)']
+    ATTRS = ['B-side', 'Released', 'Recorded', 'Genre', 'Length', 'Label', 
+        'Songwriter(s)', 'Producer(s)']
     
-    html_filenames = ['html/Funkytown.html', 'html/Upside_Down.html']
+    html_filenames = ['html/Funkytown.html', 'html/Upside_Down.html',
+        'html/Catch_a_Falling_Star1958.html']
 
     for f in html_filenames:
         soup = bs4.BeautifulSoup(open(f), features='html.parser')
