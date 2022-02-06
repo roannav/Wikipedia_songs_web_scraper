@@ -17,6 +17,15 @@ def get_text_from_infobox( soup, att):
     #tab = soup.find('table', {'class': 'infobox'}) # WORKS ALSO!
     #tab = soup.select(".infobox")[0]               # WORKS ALSO! 
 
+    # infobox may include content that is not displayed.
+    # <td class="infobox-data plainlist">October&#160;7,&#160;2019
+    # <span style="display:none">&#160;(<span class="bday dtstart
+    # published updated">2019-10-07</span>)</span></td>
+
+    hidden = tab.find_all(style="display:none")
+    for h in hidden:
+        h.extract()   # don't scrape content that is hidden
+
     rows = tab.find_all("tr")
 
 
