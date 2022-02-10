@@ -1,4 +1,4 @@
-import sys
+import sys, time, math
 import pandas as pd
 from pandas import DataFrame, Series
 from wget import download
@@ -12,16 +12,41 @@ f = 'output/Billboard_1946_to_2021.csv'
 df = pd.read_csv(f, header=0)
 
 #if sys.argv >= 2: 
- 
-
-print(df.song_URL)  # Series
-print(df.song_URL[0])  # first song 
+#print(df.song_URL)  # Series
+#print(df.song_URL[0])  # first song 
 
 
 url_base = "https://en.wikipedia.org"
-url = url_base + df.song_URL[0]
-print(url)
-try:
-    download(url, out='html2')
-except err:
-    print(err)   #urllib.error.HTTPError:  # HTTP Error 404: Not Found
+
+
+def go_slow():
+    #https://api.wikimedia.org/wiki/Documentation/Getting_started/Rate_limits
+    # says anonymous requests are limited to 500 / hr.
+    # 3600 sec/hr / 500 req/hr = 7.2 sec/req
+    time.sleep(8)
+
+    # if using OAuth 2.0 or a personal API token to do authentication, 
+    # then requests are limited to 5000 / hr.
+
+
+for i in range(11,13):
+    url_i = df.song_URL[i]
+    print(url_i)
+    if type(url_i) == type('') and url_i.startswith('/wiki/'): 
+        url = url_base + url_i 
+        print(url)
+        try:
+            download(url, out='html2')
+        except err:
+            print(err)
+            print('\n')  
+            #urllib.error.HTTPError:  # HTTP Error 404: Not Found
+        go_slow()
+
+    elif math.isnan(url_i):
+        print(f"INFO: no url given for {df.year[i]}'s"
+            + f" \"{df.title[i]}\" sung by {df.artist[i]}")
+    else:
+        print("ERROR: url must be NaN or a string beginning with '/wiki/'")
+        print(f"       for {df.year[i]}'s"
+            + f" \"{df.title[i]}\" sung by {df.artist[i]}")
