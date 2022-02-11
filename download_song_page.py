@@ -3,6 +3,7 @@ import pandas as pd
 from pandas import DataFrame, Series
 import wget
 import urllib
+import logging
 
 FIRST_YEAR = 1946
 LAST_YEAR = 2021
@@ -63,10 +64,12 @@ for i in range(18,21):
             print('\nurllib.error.HTTPError occurred.')
             print(err)
             print('\n')
+            logging.exception('\nurllib.error.HTTPError occurred.')
         except Exception as err:
             print('\nException occurred.')
             print(err)
             print('\n')
+            logging.exception('\nException occurred.')
 
 
         go_slow()
