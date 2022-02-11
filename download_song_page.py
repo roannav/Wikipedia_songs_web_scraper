@@ -1,7 +1,8 @@
 import sys, time, math
 import pandas as pd
 from pandas import DataFrame, Series
-from wget import download
+import wget
+import urllib
 
 FIRST_YEAR = 1946
 LAST_YEAR = 2021
@@ -20,6 +21,7 @@ url_base = "https://en.wikipedia.org"
 
 
 def go_slow():
+    print('pausing...\n')
     #https://api.wikimedia.org/wiki/Documentation/Getting_started/Rate_limits
     # says anonymous requests are limited to 500 / hr.
     # 3600 sec/hr / 500 req/hr = 7.2 sec/req
@@ -29,18 +31,30 @@ def go_slow():
     # then requests are limited to 5000 / hr.
 
 
-for i in range(11,13):
+for i in range(18,21):
     url_i = df.song_URL[i]
     print(url_i)
     if type(url_i) == type('') and url_i.startswith('/wiki/'): 
         url = url_base + url_i 
         print(url)
         try:
-            download(url, out='html2')
-        except err:
+            # wget expects a file extension.  Else it raises 
+            #   "ValueError: not enough values to unpack (expected 2, got 1)"
+            filename = wget.download(url, 'html2' + url_i + '.html')
+            #filename = wget.download(url, output='html2', bar=bar_thermometer)
+            print(f"\nFinished downloading {filename}")
+        except urllib.error.HTTPError as err:
+            #urllib.error.HTTPError: HTTP Error 404: Not Found
+            #urllib.error.HTTPError: HTTP Error 400: Bad Request
+            print('\nurllib.error.HTTPError occurred.')
             print(err)
-            print('\n')  
-            #urllib.error.HTTPError:  # HTTP Error 404: Not Found
+            print('\n')
+        except Exception as err:
+            print('\nException occurred.')
+            print(err)
+            print('\n')
+
+
         go_slow()
 
     elif math.isnan(url_i):
