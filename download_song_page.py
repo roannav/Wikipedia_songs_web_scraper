@@ -31,6 +31,16 @@ def go_slow():
     # then requests are limited to 5000 / hr.
 
 
+def progress_bar(current, total, width=80):
+    # IN: 'total' can not be 0 (to avoid ZeroDivisionError)
+    # IN: 'width' is number of open spaces in the progress bar
+    # Returns a string, that looks like a progress bar
+    # that begins as a dark bar and becomes a light bar as it progresses.
+
+    lit_spaces = int(float(current) / total * width)
+    return '\u2593' * lit_spaces + '\u2591' * (width - lit_spaces)
+
+
 for i in range(18,21):
     url_i = df.song_URL[i]
     print(url_i)
@@ -38,10 +48,14 @@ for i in range(18,21):
         url = url_base + url_i 
         print(url)
         try:
+            # wget.download(file_to_download, output_dir_filename, progress_bar)
             # wget expects a file extension.  Else it raises 
             #   "ValueError: not enough values to unpack (expected 2, got 1)"
-            filename = wget.download(url, 'html2' + url_i + '.html')
-            #filename = wget.download(url, output='html2', bar=bar_thermometer)
+            # Need to assign 'bar' a value or None
+            #   or else it prints "-1 / unknown"
+            #filename = wget.download(url, 'html2' + url_i + '.html', bar=None)
+            filename = wget.download(url, 'html2' + url_i + '.html',
+                bar=progress_bar)
             print(f"\nFinished downloading {filename}")
         except urllib.error.HTTPError as err:
             #urllib.error.HTTPError: HTTP Error 404: Not Found
