@@ -79,23 +79,32 @@ def get_text_from_infobox( soup, att):
                 # replace Unicode \xa0 (non-breaking space) with a space
                 value = unicodedata.normalize("NFKD", value)
 
-                print(value)
+                #print(value)
                 return value
 
-    print(f"Couldn't find attribute '{att}' in the Wikipedia infobox.")
+    #print(f"Couldn't find attribute '{att}' in the Wikipedia infobox.")
     return None
 
 
-def run_tests():
+def run_local_tests():
     # Look at a Wikipedia page, which usu. has these attributes in an infobox
-    ATTRS = ['B-side', 'Released', 'Recorded', 'Genre', 'Length', 'Label', 
-        'Songwriter(s)', 'Producer(s)']
+    ATTRS = ['A-side', 'B-side',
+        'Recorded', 'Studio',
+        'Released', 'Published', 'Label',
+        'Genre', 'Length',
+        'Songwriter(s)', 'Producer(s)',
+        'Composer(s)', 'Lyricist(s)'
+    ]
     
-    html_filenames = ['html/Funkytown.html', 
+    html_filenames = [
+        'html/Funkytown.html',
         'html/Upside_Down.html',
         'html/Catch_a_Falling_Star1958.html',
         'html/Magic_Moments1958.html',
-        'html/I_Hope_Youre_Happy_Now2020.html']
+        'html/Stood_Up1958.html',
+        'html/Heartaches1947.html',
+        'html/I_Hope_Youre_Happy_Now2020.html'
+    ]
 
     for f in html_filenames:
         soup = bs4.BeautifulSoup(open(f), features='html.parser')
@@ -110,4 +119,4 @@ def run_tests():
     get_text_from_infobox(soup, 'DoesNotExist')
 
 
-run_tests()
+run_local_tests()
