@@ -110,7 +110,11 @@ def run_local_tests():
         soup = bs4.BeautifulSoup(open(f), features='html.parser')
         values = []
         for att in ATTRS:
-            values.append(get_text_from_infobox(soup, att))
+            value = get_text_from_infobox(soup, att)
+            if value == None:
+                #value = '\u00D8'  # null symbol
+                value = '\u2588'  # white block;  make it easily visible
+            values.append(value)
 
         print(list(zip(ATTRS, values)),'\n')
 
