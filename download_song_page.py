@@ -46,8 +46,12 @@ for i in range(18,21):
     url_i = df.song_URL[i]
     print(url_i)
     if type(url_i) == type('') and url_i.startswith('/wiki/'): 
+        # replace %xx escapes with their single-char equivalent
+        url_i = urllib.parse.unquote(url_i)
+
         url = url_base + url_i 
         print(url)
+
         try:
             # wget.download(file_to_download, output_dir_filename, progress_bar)
             # wget expects a file extension.  Else it raises 
@@ -55,6 +59,7 @@ for i in range(18,21):
             # Need to assign 'bar' a value or None
             #   or else it prints "-1 / unknown"
             #filename = wget.download(url, 'html2' + url_i + '.html', bar=None)
+
             filename = wget.download(url, 'html2' + url_i + '.html',
                 bar=progress_bar)
             print(f"\nFinished downloading {filename}")
@@ -76,8 +81,8 @@ for i in range(18,21):
 
     elif math.isnan(url_i):
         print(f"INFO: no url given for {df.year[i]}'s"
-            + f" \"{df.title[i]}\" sung by {df.artist[i]}")
+            + f" \"{df.title[i]}\" sung by {df.artist[i]}\n")
     else:
         print("ERROR: url must be NaN or a string beginning with '/wiki/'")
         print(f"       for {df.year[i]}'s"
-            + f" \"{df.title[i]}\" sung by {df.artist[i]}")
+            + f" \"{df.title[i]}\" sung by {df.artist[i]}\n")
