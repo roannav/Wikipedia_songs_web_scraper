@@ -121,7 +121,28 @@ def get_from_the_album( attribHTML):
         return None
 
 
-def run_local_tests():
+def run_fail_tests():
+    # Test failing case
+    soup = bs4.BeautifulSoup(open('html/Funkytown.html'),
+        features='html.parser')
+    get_text_from_infobox(soup, 'DoesNotExist')
+
+
+def run_local_tests(html_filenames, ATTRS):
+    for f in html_filenames:
+        soup = bs4.BeautifulSoup(open(f), features='html.parser')
+        values = []
+        for att in ATTRS:
+            value = get_text_from_infobox(soup, att)
+            if value == None:
+                #value = '\u00D8'  # null symbol
+                value = '\u2588'  # white block;  make it easily visible
+            values.append(value)
+
+        print(list(zip(ATTRS, values)),'\n')
+
+
+def run_local_tests1():
     # Look at a Wikipedia page, which usu. has these attributes in an infobox
     ATTRS = ['A-side', 'B-side',
         'Recorded', 'Studio',
@@ -141,21 +162,8 @@ def run_local_tests():
         'html/I_Hope_Youre_Happy_Now2020.html'
     ]
 
-    for f in html_filenames:
-        soup = bs4.BeautifulSoup(open(f), features='html.parser')
-        values = []
-        for att in ATTRS:
-            value = get_text_from_infobox(soup, att)
-            if value == None:
-                #value = '\u00D8'  # null symbol
-                value = '\u2588'  # white block;  make it easily visible
-            values.append(value)
+    run_local_tests(html_filenames, ATTRS)
 
-        print(list(zip(ATTRS, values)),'\n')
-
-    # Test failing case
-    soup = bs4.BeautifulSoup(open(html_filenames[0]), features='html.parser')
-    get_text_from_infobox(soup, 'DoesNotExist')
 
 def run_local_tests2():
     ATTRS = ['from the album'
@@ -174,7 +182,13 @@ def run_local_tests2():
         'html2/wiki/Try_Again_(Aaliyah_song).html'
     ]
 
-    '''
+    run_local_tests(html_filenames, ATTRS)
+
+
+def run_local_tests3():
+    ATTRS = ['from the album'
+    ]
+
     # make a list of all songs in the directory
     dir_list = os.listdir("html2/wiki")
 
@@ -182,22 +196,11 @@ def run_local_tests2():
     n = 1   # use 1 to use ALL songs
     html_filenames = ["html2/wiki/" + x
         for i, x in enumerate(dir_list) if i%n==0]
-    '''
 
-    for f in html_filenames:
-        print(f)
-        soup = bs4.BeautifulSoup(open(f), features='html.parser')
-        values = []
-        for att in ATTRS:
-            value = get_text_from_infobox(soup, att)
-            if value == None:
-                value = '\u2588'  # white block;  make it easily visible
-            values.append(value)
-
-        print(list(zip(ATTRS, values)),'\n')
+    run_local_tests(html_filenames, ATTRS)
 
 
-
-#run_local_tests()
-
-run_local_tests2()
+#run_fail_tests()
+#run_local_tests1()
+#run_local_tests2()
+run_local_tests3()
