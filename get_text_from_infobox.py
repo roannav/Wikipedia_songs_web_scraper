@@ -43,6 +43,11 @@ def get_text_from_infobox( soup, att):
         attribHTML = row.find("th")
         if attribHTML:
             # for every row, remove the <sup> and <style> tags 
+            # row may look like...
+            # <tr><th class="infobox-label" scope="row">Released</th>
+            #   <td class="infobox-data plainlist">March 1980
+            #     <sup class="reference" id="cite_ref-1">
+            #     <a href="#cite_note-1">[1]</a></sup></td></tr>
             while row.sup:          # if there are <sup> tags in the row,
                 row.sup.extract()   # remove them
 
@@ -55,13 +60,6 @@ def get_text_from_infobox( soup, att):
 
             elif attribHTML.getText(strip=True) == att:
                 # found the row we want.
-                # row may look like...
-                # <tr><th class="infobox-label" scope="row">Released</th>
-                #   <td class="infobox-data plainlist">March 1980
-                #     <sup class="reference" id="cite_ref-1">
-                #     <a href="#cite_note-1">[1]</a></sup></td></tr>
-                while row.sup:          # if there are <sup> tags in the row,
-                    row.sup.extract()   # remove them
 
                 value = ""
                 # get the text from the <td> element only, not from <th>
@@ -200,7 +198,17 @@ def run_local_tests3():
     run_local_tests(html_filenames, ATTRS)
 
 
+# check that the superscripts are removed
+def run_local_tests5():
+    ATTRS = [ 'Released', 'Genre' ]
+    html_filenames = [ 'html/Funkytown.html',
+        'html/Upside_Down.html'
+    ]
+    run_local_tests(html_filenames, ATTRS)
+
+
 #run_fail_tests()
 #run_local_tests1()
 #run_local_tests2()
-run_local_tests3()
+#run_local_tests3()
+run_local_tests5()
