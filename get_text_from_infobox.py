@@ -144,7 +144,7 @@ def run_local_tests(html_filenames, ATTRS):
 
 def run_local_tests1():
     # Look at a Wikipedia page, which usu. has these attributes in an infobox
-    ATTRS = ['A-side', 'B-side',
+    ATTRS = ['A-side', 'B-side', 'from the album',
         'Recorded', 'Studio',
         'Released', 'Published', 'Label',
         'Genre', 'Length',
