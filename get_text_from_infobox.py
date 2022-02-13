@@ -61,6 +61,25 @@ def get_text_from_infobox( soup, att):
             elif attribHTML.getText(strip=True) == att:
                 # found the row we want.
 
+                if att == "Music video":
+                    # get the NEXT row
+                    next_row = row.find_next_sibling("tr")
+                    # then get the href of the first <a> tag
+                    youtube_url = next_row.find("a").get("href")
+                    # next_row might look like...
+                    # <tr><td colspan="2" class="infobox-full-data">
+                    # <a rel="nofollow" class="external text" 
+                    # href="https://www.youtube.com/watch?v=Im3JzxlatUs">
+                    # <span class="plainlinks">"Cars"</span></a> on 
+                    # <a href="/wiki/YouTube" 
+                    # title="YouTube">YouTube</a></td></tr>
+
+                    if "http" not in youtube_url:
+                        print("WARNING: youtube_url is not a valid url")
+                    if "youtube" not in youtube_url:
+                        print("WARNING: youtube_url is not from youtube.com")
+                    return youtube_url
+
                 value = ""
                 # get the text from the <td> element only, not from <th>
 
@@ -184,7 +203,8 @@ def run_local_tests2():
 
 
 def run_local_tests3():
-    ATTRS = ['from the album'
+    ATTRS = ['from the album',
+        'Music video'
     ]
 
     # make a list of all songs in the directory
@@ -194,6 +214,22 @@ def run_local_tests3():
     n = 1   # use 1 to use ALL songs
     html_filenames = ["html2/wiki/" + x
         for i, x in enumerate(dir_list) if i%n==0]
+
+    run_local_tests(html_filenames, ATTRS)
+
+
+def run_local_tests4():
+    ATTRS = ['Music video'
+    ]
+
+    html_filenames = [
+        'html2/wiki/Cars_(song).html',
+        'html2/wiki/Dancing_Queen.html',
+        'html2/wiki/Always_on_Time.html',
+        'html2/wiki/Here_Without_You.html',
+
+        # special cases
+    ]
 
     run_local_tests(html_filenames, ATTRS)
 
@@ -210,5 +246,6 @@ def run_local_tests5():
 #run_fail_tests()
 #run_local_tests1()
 #run_local_tests2()
-#run_local_tests3()
-run_local_tests5()
+run_local_tests3()
+#run_local_tests4()
+#run_local_tests5()
