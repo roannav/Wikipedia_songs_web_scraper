@@ -73,6 +73,11 @@ def get_text_from_infobox( soup, att):
                     # <span class="plainlinks">"Cars"</span></a> on 
                     # <a href="/wiki/YouTube" 
                     # title="YouTube">YouTube</a></td></tr>
+
+                    if "http" not in youtube_url:
+                        print("WARNING: youtube_url is not a valid url")
+                    if "youtube" not in youtube_url:
+                        print("WARNING: youtube_url is not from youtube.com")
                     return youtube_url
 
                 value = ""
@@ -198,7 +203,8 @@ def run_local_tests2():
 
 
 def run_local_tests3():
-    ATTRS = ['from the album'
+    ATTRS = ['from the album',
+        'Music video'
     ]
 
     # make a list of all songs in the directory
@@ -240,6 +246,6 @@ def run_local_tests5():
 #run_fail_tests()
 #run_local_tests1()
 #run_local_tests2()
-#run_local_tests3()
-run_local_tests4()
+run_local_tests3()
+#run_local_tests4()
 #run_local_tests5()
