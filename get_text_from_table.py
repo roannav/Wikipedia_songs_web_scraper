@@ -178,39 +178,39 @@ def run_tests():
     html_filename = 'html/Billboard_Top_in_1980.html'
     soup = bs4.BeautifulSoup(open(html_filename), features='html.parser')
     data, cols = get_text_from_table(soup, True)
-    convert_table_to_csv( data, cols, 'output.csv')
+    convert_table_to_csv( data, cols, 'output/output.csv')
 
     html_filename = 'html/Billboard_Top_in_1980.html'
     soup = bs4.BeautifulSoup(open(html_filename), features='html.parser')
     data, cols = get_text_from_table(soup, False)
-    convert_table_to_csv( data, cols, 'output2.csv')
+    convert_table_to_csv( data, cols, 'output/output2.csv')
 
     html_filename = 'html/Billboard_Top_in_1980.html'
     soup = bs4.BeautifulSoup(open(html_filename), features='html.parser')
     data, cols = get_text_from_table(soup, True, "wikitable")
-    convert_table_to_csv( data, cols, 'output3.csv')
+    convert_table_to_csv( data, cols, 'output/output3.csv')
     '''
 
     html_filename = 'html/Billboard_Top50_in_1958.html'
     soup = bs4.BeautifulSoup(open(html_filename), features='html.parser')
     data, cols = get_text_from_table(soup, True, "wikitable")
-    convert_table_to_csv( data, cols, 'output4.csv')
+    convert_table_to_csv( data, cols, 'output/output4.csv')
     
     html_filename = 'html/Billboard_Top100_in_2012.html'
     soup = bs4.BeautifulSoup(open(html_filename), features='html.parser')
     data, cols = get_text_from_table(soup, True, "wikitable")
-    convert_table_to_csv( data, cols, 'output5.csv')
+    convert_table_to_csv( data, cols, 'output/output5.csv')
 
     html_filename = 'html/Billboard_Top100_in_2020.html'
     soup = bs4.BeautifulSoup(open(html_filename), features='html.parser')
     data, cols = get_text_from_table(soup, True, "wikitable")
-    convert_table_to_csv( data, cols, 'output6.csv')
+    convert_table_to_csv( data, cols, 'output/output6.csv')
 
     '''
     html_filename = 'html/Billboard_Top100_in_2021.html'
     soup = bs4.BeautifulSoup(open(html_filename), features='html.parser')
     data, cols = get_text_from_table(soup, True, "wikitable")
-    convert_table_to_csv( data, cols, 'output7.csv')
+    convert_table_to_csv( data, cols, 'output/output7.csv')
     '''
 
 #run_tests()
