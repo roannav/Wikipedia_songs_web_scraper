@@ -4,14 +4,14 @@ The [repository on GitHub](https://github.com/roannav/Wikipedia_songs_web_scrape
 
 ### A web scraper for Wikipedia pages containing Billboard Top Songs for each year.
 
-A collection of Python code to scrape websites.
+![Wikipedia logo](Wikipedia-logo-v2-en.svg)
 
 ### [requirements.txt](/../main/requirements.txt)
 
 ### [get_text_from_html.py](/../main/get_text_from_html.py)
 Takes any HTML, even a snippet from a web page,
 and returns just the text contained between any of the tags,
-not including the <head>, <style>, and <script> sections.
+not including the \<head\>, <style>, and <script> sections.
 
 ### [get_text_from_infobox.py](/../main/get_text_from_infobox.py)
 Given the HTML of a Wikipedia page about a song,
@@ -39,7 +39,8 @@ and combines it into 1 file output/Billboard_1946_to_2021.csv
 ### [download_song_page.py](https://github.com/roannav/Wikipedia_songs_web_scraper/blob/main/download_song_page.py)
 output/Billboard_1946_to_2021.csv contains a list of Wikipedia urls to songs.  For the specified sublist of songs, it downloads those web pages.
 
-
+#### Credits
+Wikipedia Logo By Wikimedia Foundation, CC BY-SA 3.0, https://commons.wikimedia.org/w/index.php?curid=10309782
 
 <!--
 Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
